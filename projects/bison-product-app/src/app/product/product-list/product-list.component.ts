@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {WorkbenchRouter, WorkbenchView} from '@scion/workbench-client';
 import {Product} from '../product.model';
 import {ProductService} from '../product.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -11,18 +11,14 @@ import {ProductService} from '../product.service';
 })
 export class ProductListComponent {
 
-  private workbenchRouter = inject(WorkbenchRouter);
+  private router = inject(Router);
   protected products: Product[];
 
-  constructor(view: WorkbenchView, productService: ProductService) {
-    view.setTitle('Product Catalog');
-    view.signalReady();
+  constructor(productService: ProductService) {
     this.products = productService.getProducts();
   }
 
   protected onOpenProduct(id: string): void {
-    this.workbenchRouter.navigate({entity: 'product'}, {
-      params: {id},
-    });
+    this.router.navigate(['products', id]);
   }
 }
